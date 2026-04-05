@@ -1,0 +1,3 @@
+ExecuteGlobal "Option Explicit"
+
+

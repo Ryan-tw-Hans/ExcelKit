@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+  <!-- 針對 .NET Framework 4.7.2 的 Costura 配置 -->
+  <!-- 指定要嵌入的程序集 -->
+  <Costura>
+    <IncludeAssemblies>
+      ClosedXML
+      ClosedXML.Parser
+      DocumentFormat.OpenXml
+      DocumentFormat.OpenXml.Framework
+      ExcelNumberFormat
+      RBush
+      SixLabors.Fonts
+      Microsoft.Bcl.HashCode
+      System.Buffers
+      System.Memory
+      System.Numerics.Vectors
+      System.Runtime.CompilerServices.Unsafe
+      System.Diagnostics.DiagnosticSource
+    </IncludeAssemblies>
+  </Costura>
+</Weavers>

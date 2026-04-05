@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Doc/">
+    <File Path="Docs/ExcelKit_User_Manual.md" />
+    <File Path="Docs/ExcelKit_User_Manual.pdf" />
+  </Folder>
+  <Folder Name="/測試腳本/">
+    <File Path="Test_PDF.vbs" />
+    <File Path="TotalTest.vbs" />
+  </Folder>
+  <Project Path="Excelopen/Excelopen.csproj" />
+</Solution>

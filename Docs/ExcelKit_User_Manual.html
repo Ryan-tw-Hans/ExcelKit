@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ExcelKit_User_Manual.md</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 2rem; line-height: 1.8; color: #333; }
+    h1,h2,h3,h4,h5,h6 { color: #111; margin: 1.5rem 0 0.5rem; }
+    h1 { font-size: 2rem; border-bottom: 2px solid #ddd; padding-bottom: 0.3rem; }
+    h2 { font-size: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.2rem; }
+    a { color: #0366d6; }
+    code { background: #f6f8fa; padding: 0.1em 0.4em; border-radius: 3px; font-family: monospace; }
+    pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    blockquote { border-left: 3px solid #aaa; padding: 0.5rem 1rem; color: #555; margin: 1rem 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th,td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; }
+    th { background: #f3f3f3; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body><h1>ExcelKit COM 元件使用手冊</h1>
+<p>本手冊提供 ExcelKit (原 Excelopen) COM 元件的註冊、卸載、驗證及 VBScript 使用範例說明。</p>
+<h2>目錄</h2>
+<ol>
+<li><a href="#1-%E6%89%8B%E5%8B%95%E8%A8%BB%E5%86%8A%E5%85%83%E4%BB%B6-manual-registration">手動註冊元件 (Manual Registration)</a></li>
+<li><a href="#2-%E5%8D%B8%E8%BC%89%E5%85%83%E4%BB%B6-unregistration">卸載元件 (Unregistration)</a></li>
+<li><a href="#3-%E7%A2%BA%E8%AA%8D%E8%A8%BB%E5%86%8A%E7%8B%80%E6%85%8B">確認註冊狀態</a></li>
+<li><a href="#4-api-%E5%BF%AB%E9%80%9F%E6%AA%A2%E7%B4%A2%E8%A1%A8-quick-api-index">API 快速檢索表 (Quick API Index)</a></li>
+<li><a href="#5-api-%E5%87%BD%E5%BC%8F%E8%88%87%E5%B1%AC%E6%80%A7%E8%A9%B3%E7%B4%B0%E8%AA%AA%E6%98%8E">API 函式與屬性詳細說明</a><ul>
+<li><a href="#51-%E5%9F%BA%E7%A4%8E%E6%93%8D%E4%BD%9C-basic-operations">5.1 基礎操作</a></li>
+<li><a href="#52-%E8%B3%87%E6%96%99%E7%B7%A8%E8%BC%AF-data-manipulation">5.2 資料編輯</a></li>
+<li><a href="#53-%E8%A1%8C%E8%88%87%E5%88%97%E7%9A%84%E6%93%8D%E4%BD%9C-rows-and-columns">5.3 行與列的操作</a></li>
+<li><a href="#54-%E6%93%B4%E5%85%85%E5%8A%9F%E8%83%BD-extended-features---%E9%9C%80%E8%A6%81-libreoffice">5.4 擴充功能</a></li>
+<li><a href="#55-%E9%85%8D%E7%BD%AE%E8%88%87%E6%97%A5%E8%AA%8C-configuration--logging">5.5 配置與日誌</a></li>
+</ul>
+</li>
+<li><a href="#6-%E5%B8%B8%E7%94%A8%E6%95%B8%E5%80%BC%E5%B0%8D%E7%85%A7-constants-reference">常用數值對照 (Constants Reference)</a></li>
+<li><a href="#7-vbscript-vbs-%E7%B6%9C%E5%90%88%E6%B8%AC%E8%A9%A6%E8%85%B3%E6%9C%AC">VBScript (VBS) 綜合測試腳本</a></li>
+<li><a href="#8-%E5%B8%B8%E8%A6%8B%E5%95%8F%E9%A1%8C-faq">常見問題 (FAQ)</a></li>
+</ol>
+<h2>1. 手動註冊元件 (Manual Registration)</h2>
+<p>註冊 COM 元件需要使用管理員權限打開「命令提示字元 (CMD)」或「PowerShell」。</p>
+<h3>⚠️ 注意事項</h3>
+<ul>
+<li>請確保已安裝 <strong>.NET Framework 4.7.2</strong>。</li>
+<li>執行路徑必須指向編譯後的 <code>ExcelKit.dll</code> 實際位置。</li>
+<li>必須以 <strong>管理員身份</strong> 執行。</li>
+</ul>
+<h3>64 位元 (x64) 註冊</h3>
+<p>適用於 64 位元應用程式 (如 64 位元 LabVIEW, Excel, VBScript x64)。</p>
+<pre><code class="language-cmd">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\regasm.exe /codebase &quot;你的路徑\ExcelKit.dll&quot; /tlb &quot;你的路徑\ExcelKit.tlb&quot;
+</code></pre>
+<h3>32 位元 (x86) 註冊</h3>
+<p>適用於 32 位元應用程式 (如 32 位元 LabVIEW, Excel, VBScript x32)。</p>
+<pre><code class="language-cmd">C:\Windows\Microsoft.NET\Framework\v4.0.30319\regasm.exe /codebase &quot;你的路徑\ExcelKit.dll&quot; /tlb &quot;你的路徑\ExcelKit.tlb&quot;
+</code></pre>
+<hr>
+<h2>2. 卸載元件 (Unregistration)</h2>
+<p>如果需要更新元件或移除，可執行以下指令：</p>
+<h3>64 位元 (x64) 卸載</h3>
+<pre><code class="language-cmd">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\regasm.exe /unregister &quot;你的路徑\ExcelKit.dll&quot;
+</code></pre>
+<h3>32 位元 (x86) 卸載</h3>
+<pre><code class="language-cmd">C:\Windows\Microsoft.NET\Framework\v4.0.30319\regasm.exe /unregister &quot;你的路徑\ExcelKit.dll&quot;
+</code></pre>
+<hr>
+<h2>3. 確認註冊狀態</h2>
+<h3>方法 A：使用 PowerShell 測試 (推薦)</h3>
+<p>開啟 PowerShell 並執行以下指令，若無報錯並顯示版本資訊，表示註冊成功：</p>
+<pre><code class="language-powershell">$excel = New-Object -ComObject ExcelKit.ExcelOperator
+$excel.GetVersionInfo()
+</code></pre>
+<p>或者直接執行產送的 <code>check-registration.ps1</code> 檔案：</p>
+<pre><code class="language-powershell">.\check-registration.ps1
+</code></pre>
+<h3>方法 B：檢查登錄檔 (Registry Editor)</h3>
+<ol>
+<li>按 <code>Win + R</code>，輸入 <code>regedit</code> 並執行。</li>
+<li>尋找路徑：<code>HKEY_CLASSES_ROOT\ExcelKit.ExcelOperator</code>。</li>
+<li>如果該路徑存在，表示 ProgID 已載入。</li>
+</ol>
+<hr>
+<h2>4. API 快速檢索表 (Quick API Index)</h2>
+<table>
+<thead>
+<tr>
+<th align="left">類型</th>
+<th align="left">名稱</th>
+<th align="left">簡要說明</th>
+<th align="left">詳情章節</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>GetVersionInfo()</code></td>
+<td align="left">取得元件版本資訊字串</td>
+<td align="left"><a href="#getversioninfo">5.1</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>CreateNewWorkbook()</code></td>
+<td align="left">在記憶體中建立新活頁簿</td>
+<td align="left"><a href="#createnewworkbook">5.1</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>OpenWorkbook(path)</code></td>
+<td align="left">開啟現有 Excel 檔案</td>
+<td align="left"><a href="#openworkbookfilepath">5.1</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>SaveWorkbook(path)</code></td>
+<td align="left">儲存目前活頁簿 (可另存)</td>
+<td align="left"><a href="#saveworkbookfilepath">5.1</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>AddSheet(name)</code></td>
+<td align="left">新增一個工作表</td>
+<td align="left"><a href="#addsheetsheetname">5.2</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>DeleteSheet(name)</code></td>
+<td align="left">刪除指定名稱的工作表</td>
+<td align="left"><a href="#deletesheetsheetname">5.2</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>SetCellValue(sh, addr, val)</code></td>
+<td align="left">使用 A1 格式寫入資料</td>
+<td align="left"><a href="#setcellvaluesheetname-celladdress-value">5.2</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>SetCellValueByRC(sh, r, c, val)</code></td>
+<td align="left">使用行列號 (1-based) 寫入資料</td>
+<td align="left"><a href="#setcellvaluebyrcsheetname-row-column-value">5.2</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>GetCellValue(sh, addr)</code></td>
+<td align="left">使用 A1 格式讀取資料</td>
+<td align="left"><a href="#getcellvaluesheetname-celladdress">5.2</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>ClearCell(sh, addr)</code></td>
+<td align="left">清除單一儲存格內容</td>
+<td align="left"><a href="#clearcellsheetname-celladdress">5.2</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>InsertRow/Column(sh, pos)</code></td>
+<td align="left">插入空行/空列</td>
+<td align="left"><a href="#53-%E8%A1%8C%E8%88%87%E5%88%97%E7%9A%84%E6%93%8D%E4%BD%9C-rows-and-columns">5.3</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>SetRow/ColumnWidth(sh, p, v)</code></td>
+<td align="left">設定指定行列寬高</td>
+<td align="left"><a href="#53-%E8%A1%8C%E8%88%87%E5%88%97%E7%9A%84%E6%93%8D%E4%BD%9C-rows-and-columns">5.3</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>ExportToPdf(src, dst)</code></td>
+<td align="left">將 Excel 轉換為 PDF (需 LibreOffice)</td>
+<td align="left"><a href="#54-%E6%93%B4%E5%85%85%E5%8A%9F%E8%83%BD-extended-features---%E9%9C%80%E8%A6%81-libreoffice">5.4</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>PrintWorkbook(src, prn)</code></td>
+<td align="left">列印 Excel 檔案 (需 LibreOffice)</td>
+<td align="left"><a href="#54-%E6%93%B4%E5%85%85%E5%8A%9F%E8%83%BD-extended-features---%E9%9C%80%E8%A6%81-libreoffice">5.4</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>SetLibreOfficePath(path)</code></td>
+<td align="left">手動指定 LibreOffice 執行路徑</td>
+<td align="left"><a href="#55-%E9%85%8D%E7%BD%AE%E8%88%87%E6%97%A5%E8%AA%8C-configuration--logging">5.5</a></td>
+</tr>
+<tr>
+<td align="left"><strong>函式</strong></td>
+<td align="left"><code>SetLogEnabled(bool)</code></td>
+<td align="left">啟用或停用操作日誌</td>
+<td align="left"><a href="#55-%E9%85%8D%E7%BD%AE%E8%88%87%E6%97%A5%E8%AA%8C-configuration--logging">5.5</a></td>
+</tr>
+<tr>
+<td align="left"><strong>常數</strong></td>
+<td align="left"><code>LogLevelError (1)</code></td>
+<td align="left">僅記錄錯誤</td>
+<td align="left"><a href="#6-%E5%B8%B8%E7%94%A8%E6%95%B8%E5%80%BC%E5%B0%8D%E7%85%A7-constants-reference">6.0</a></td>
+</tr>
+<tr>
+<td align="left"><strong>常數</strong></td>
+<td align="left"><code>LogLevelInfo (3)</code></td>
+<td align="left">詳細執行記錄 (預設)</td>
+<td align="left"><a href="#6-%E5%B8%B8%E7%94%A8%E6%95%B8%E5%80%BC%E5%B0%8D%E7%85%A7-constants-reference">6.0</a></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. API 函式與屬性詳細說明</h2>
+<p>以下是 <code>ExcelKit.ExcelOperator</code> 物件支援的所有公開介面說明。</p>
+<h3>5.1 基礎操作 (Basic Operations)</h3>
+<h4><code>GetVersionInfo()</code></h4>
+<ul>
+<li><strong>說明</strong>: 取得目前的元件名稱、版本與更新日期。</li>
+<li><strong>回傳</strong>: String</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">MsgBox excel.GetVersionInfo()
+</code></pre>
+</li>
+</ul>
+<h4><code>CreateNewWorkbook()</code></h4>
+<ul>
+<li><strong>說明</strong>: 在記憶體中建立一個新的活頁簿（預設包含一個 &quot;Sheet1&quot; 分頁）。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.CreateNewWorkbook
+</code></pre>
+</li>
+</ul>
+<h4><code>OpenWorkbook(filePath)</code></h4>
+<ul>
+<li><strong>說明</strong>: 開啟現有的 Excel 檔案。</li>
+<li><strong>參數</strong>: <code>filePath</code> (String) - 檔案完整路徑。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.OpenWorkbook &quot;D:\Reports\Data.xlsx&quot;
+</code></pre>
+</li>
+</ul>
+<h4><code>SaveWorkbook(filePath)</code></h4>
+<ul>
+<li><strong>說明</strong>: 儲存目前的活頁簿。</li>
+<li><strong>參數</strong>: <code>filePath</code> (String, 可省略) - 儲存位置。若省略則覆蓋原開啟檔案。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">&#39; 另存新檔
+excel.SaveWorkbook &quot;C:\Output\Result.xlsx&quot;
+&#39; 儲存原檔
+excel.SaveWorkbook &quot;&quot;
+</code></pre>
+</li>
+</ul>
+<hr>
+<h3>5.2 資料編輯 (Data Manipulation)</h3>
+<h4><code>AddSheet(sheetName)</code></h4>
+<ul>
+<li><strong>說明</strong>: 新增一個指定名稱的工作表。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.AddSheet &quot;NewReport&quot;
+</code></pre>
+</li>
+</ul>
+<h4><code>SetCellValue(sheetName, cellAddress, value)</code></h4>
+<ul>
+<li><strong>說明</strong>: 在指定分頁的儲存格寫入資料。支援 A1 格式 (如 &quot;B2&quot;)。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.SetCellValue &quot;Sheet1&quot;, &quot;A1&quot;, &quot;測試資料&quot;
+</code></pre>
+</li>
+</ul>
+<h4><code>SetCellValueByRC(sheetName, row, column, value)</code></h4>
+<ul>
+<li><strong>說明</strong>: 使用行列號寫入資料。行列號均為 1-based (從 1 開始)。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">&#39; 在第 2 行第 3 列 (C2) 寫入內容
+excel.SetCellValueByRC &quot;Sheet1&quot;, 2, 3, &quot;RC模式&quot;
+</code></pre>
+</li>
+</ul>
+<h4><code>GetCellValue(sheetName, cellAddress)</code></h4>
+<ul>
+<li><strong>說明</strong>: 取得指定儲存格的內容。</li>
+<li><strong>回傳</strong>: Variant (根據內容返回對應類型)。</li>
+</ul>
+<h4><code>ClearCell(sheetName, cellAddress)</code></h4>
+<ul>
+<li><strong>說明</strong>: 清除指定區域或儲存格的內容，保留格式。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.ClearCell &quot;Sheet1&quot;, &quot;A1&quot;
+</code></pre>
+</li>
+</ul>
+<h4><code>DeleteSheet(sheetName)</code></h4>
+<ul>
+<li><strong>說明</strong>: 刪除指定的工作表。</li>
+</ul>
+<h4><code>GetAllSheetNames()</code></h4>
+<ul>
+<li><strong>說明</strong>: 取得活頁簿中所有工作表的名稱列表。</li>
+<li><strong>回傳</strong>: Array (字串陣列)</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">names = excel.GetAllSheetNames()
+For Each name In names
+    WScript.Echo &quot;工作表: &quot; &amp; name
+Next
+</code></pre>
+</li>
+</ul>
+<hr>
+<h3>5.3 行與列的操作 (Rows and Columns)</h3>
+<h4><code>InsertRow(sheetName, rowNumber)</code> / <code>DeleteRow(sheetName, rowNumber)</code></h4>
+<ul>
+<li><strong>說明</strong>: 在指定位置插入空列或刪除該行。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.InsertRow &quot;Sheet1&quot;, 5 &#39; 在第 5 行上方插入一空行
+excel.DeleteRow &quot;Sheet1&quot;, 10 &#39; 刪除第 10 行
+</code></pre>
+</li>
+</ul>
+<h4><code>SetRowHeight(sh, row, height)</code> / <code>SetColumnWidth(sh, col, width)</code></h4>
+<ul>
+<li><strong>說明</strong>: 設定指定行的高或列的寬。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.SetRowHeight &quot;Sheet1&quot;, 1, 30.5
+excel.SetColumnWidth &quot;Sheet1&quot;, 1, 20.0
+</code></pre>
+</li>
+</ul>
+<hr>
+<h3>5.4 擴充功能 (Extended Features - 需要 LibreOffice)</h3>
+<p>這組功能需要系統安裝 <a href="https://zh-tw.libreoffice.org/">LibreOffice</a>。元件會自動探測路徑，若失敗可使用 <code>SetLibreOfficePath</code> 手動指定。</p>
+<p>LibreOffice 官方下載連結</p>
+<ul>
+<li><a href="https://zh-tw.libreoffice.org/download/download-libreoffice/">https://zh-tw.libreoffice.org/download/download-libreoffice/</a></li>
+</ul>
+<p>LibreOffice 官方免安裝版下載連結</p>
+<ul>
+<li><a href="https://zh-tw.libreoffice.org/download/portable-versions/">https://zh-tw.libreoffice.org/download/portable-versions/</a></li>
+</ul>
+<h4><code>ExportToPdf(excelFilePath, pdfOutputPath)</code></h4>
+<ul>
+<li><strong>說明</strong>: 將指定的 Excel 檔案轉換為 PDF 格式。</li>
+<li><strong>參數</strong>:<ul>
+<li><code>excelFilePath</code>: 來源 Excel 路徑。</li>
+<li><code>pdfOutputPath</code>: PDF 輸出路徑（包含檔名）。</li>
+</ul>
+</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.ExportToPdf &quot;C:\Data\Report.xlsx&quot;, &quot;C:\Data\Report.pdf&quot;
+</code></pre>
+</li>
+</ul>
+<h4><code>PrintWorkbook(excelFilePath, printerName)</code></h4>
+<ul>
+<li><strong>說明</strong>: 使用 LibreOffice 列印 Excel 檔案。</li>
+<li><strong>參數</strong>:<ul>
+<li><code>excelFilePath</code>: 欲列印的檔案。</li>
+<li><code>printerName</code>: 印表機名稱。若設為空字串 <code>&quot;&quot;</code> 則使用系統預設印表機。</li>
+</ul>
+</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">&#39; 使用預設印表機
+excel.PrintWorkbook &quot;C:\Data\Report.xlsx&quot;, &quot;&quot;
+&#39; 指定印表機
+excel.PrintWorkbook &quot;C:\Data\Report.xlsx&quot;, &quot;HP LaserJet 400&quot;
+</code></pre>
+</li>
+</ul>
+<hr>
+<h3>5.5 配置與日誌 (Configuration &amp; Logging)</h3>
+<h4><code>SetLibreOfficePath(libreOfficePath)</code></h4>
+<ul>
+<li><strong>說明</strong>: 手動設定 <code>soffice.exe</code> 的路徑（例如當安裝在非標準路徑時）。</li>
+</ul>
+<h4><code>SetLogEnabled(enabled)</code> / <code>SetLogDirectory(path)</code> / <code>SetLogLevel(level)</code></h4>
+<ul>
+<li><strong>說明</strong>: 控制操作日誌系統。</li>
+<li><strong>參數</strong>: Level 1=Error, 2=Warning, 3=Info。</li>
+<li><strong>VBS 範例</strong>:<pre><code class="language-vbscript">excel.SetLogEnabled True
+excel.SetLogDirectory &quot;C:\Logs\ExcelKit&quot;
+excel.SetLogLevel 3 &#39; 詳細記錄
+</code></pre>
+</li>
+</ul>
+<hr>
+<h2>6. 常用數值對照 (Constants Reference)</h2>
+<p>雖然 VBScript 無法直接存取 DLL 內部的常數，但在呼叫 <code>SetLogLevel</code> 等函式時，請參考以下對照表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">功能項目</th>
+<th align="left">建議數值</th>
+<th align="left">說明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>LogLevel - Error</strong></td>
+<td align="left"><code>1</code></td>
+<td align="left">僅記錄發生中斷的錯誤。</td>
+</tr>
+<tr>
+<td align="left"><strong>LogLevel - Warning</strong></td>
+<td align="left"><code>2</code></td>
+<td align="left">記錄錯誤與非預期的警告訊息。</td>
+</tr>
+<tr>
+<td align="left"><strong>LogLevel - Info</strong></td>
+<td align="left"><code>3</code></td>
+<td align="left">(預設) 詳細記錄每一步操作與執行狀態。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. VBScript (VBS) 綜合測試腳本</h2>
+<p>以下是一個完整的 VBScript 測試範例，涵蓋了 ExcelKit 的主要功能：</p>
+<pre><code class="language-vbscript">&#39; ExcelKit comprehensive test example
+On Error Resume Next
+
+Dim excel, filePath
+filePath = &quot;C:\Temp\TestExcel.xlsx&quot; &#39; Make sure this directory exists
+
+&#39; 1. Create object
+Set excel = CreateObject(&quot;ExcelKit.ExcelOperator&quot;)
+
+If Err.Number &lt;&gt; 0 Then
+    MsgBox &quot;Unable to create ExcelKit object. Please verify that registration completed successfully.&quot; &amp; vbCrLf &amp; Err.Description
+    WScript.Quit
+End If
+
+&#39; 2. (Optional) LibreOffice path setting
+&#39; The component will try to find LibreOffice automatically, but if your install path is non-standard, set it manually
+&#39; excel.SetLibreOfficePath &quot;C:\Program Files\LibreOffice\program\soffice.exe&quot;
+
+&#39; 3. Configure logging
+excel.SetLogEnabled True
+excel.SetLogDirectory &quot;C:\Logs\ExcelKit&quot;
+excel.SetLogLevel 3 &#39; Verbose logging
+
+&#39; 4. Create a new workbook
+excel.CreateNewWorkbook
+
+&#39; 5. Write data to specific sheet and cells
+excel.SetCellValue &quot;Sheet1&quot;, &quot;A1&quot;, &quot;Hello ExcelKit!&quot;
+excel.SetCellValue &quot;Sheet1&quot;, &quot;A2&quot;, 123.45
+excel.SetCellValue &quot;Sheet1&quot;, &quot;B1&quot;, &quot;Date: &quot; &amp; Now()
+
+&#39; 6. Get version information
+Dim version
+version = excel.GetVersionInfo()
+MsgBox &quot;Current component version: &quot; &amp; version
+
+&#39; 7. Save file
+excel.SaveWorkbook filePath
+
+if Err.Number &lt;&gt; 0 Then
+    MsgBox &quot;Error occurred: &quot; &amp; Err.Description
+Else
+    MsgBox &quot;Excel file saved successfully to: &quot; &amp; filePath
+End If
+
+&#39; 8. Export to PDF (LibreOffice will be invoked automatically)
+Dim pdfPath
+pdfPath = &quot;C:\Temp\TestExcel.pdf&quot;
+excel.ExportToPdf filePath, pdfPath
+
+If Err.Number &lt;&gt; 0 Then
+    MsgBox &quot;Error exporting PDF: &quot; &amp; Err.Description
+Else
+    MsgBox &quot;Excel file exported to PDF successfully: &quot; &amp; pdfPath
+End If
+
+&#39; 9. Print workbook (requires LibreOffice)
+&#39; excel.PrintWorkbook filePath, &quot;&quot; &#39; Use default printer
+
+&#39; 10. Release resources
+Set excel = Nothing
+</code></pre>
+<hr>
+<h2>8. 常見問題 (FAQ)</h2>
+<ul>
+<li><strong>錯誤碼 0x80040154 (Class not registered)</strong>：<ul>
+<li>通常是因為 DLL 沒有被註冊，或者你的程式位元數 (x86/x64) 與註冊的 DLL 位元數不對應。請確保同時執行過 x86 與 x64 的 <code>regasm</code> 指令。</li>
+</ul>
+</li>
+<li><strong>權限不足</strong>：<ul>
+<li>註冊時必須對 CMD 點選「右鍵 -&gt; 以管理員身分執行」。</li>
+</ul>
+</li>
+<li><strong>FileNotFoundException</strong>：<ul>
+<li>使用 <code>regasm</code> 時，請務必加上 <code>/codebase</code> 參數，否則 .NET 會去 GAC 尋找 DLL。</li>
+</ul>
+</li>
+</ul>
+</body>
+</html>

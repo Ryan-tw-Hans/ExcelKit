@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  .NET 10 版本的 Fody 配置
+  此文件用於 .NET 10 編譯，禁用 Costura 處理
+  因為 .NET 10 不支援 Costura.Fody
+-->
+<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+  <!-- .NET 10 不需要 Costura，所有依賴會隨著 NuGet 包部署 -->
+</Weavers>
