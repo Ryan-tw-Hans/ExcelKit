@@ -89,7 +89,7 @@ using System.Runtime.InteropServices;
         /// <summary>
         /// 庫版本號
         /// </summary>
-        public static readonly string Version = "1.2.2";
+        public static readonly string Version = "1.2.3";
 
         /// <summary>
         /// 庫名稱
