@@ -10,10 +10,10 @@
     <LangVersion>latest</LangVersion>
 
     <!-- 版本資訊 -->
-    <Version>1.2.3</Version>
-    <AssemblyVersion>1.2.3.0</AssemblyVersion>
-    <FileVersion>1.2.3.0</FileVersion>
-    <InformationalVersion>1.2.3</InformationalVersion>
+    <Version>1.2.4</Version>
+    <AssemblyVersion>1.2.4.0</AssemblyVersion>
+    <FileVersion>1.2.4.0</FileVersion>
+    <InformationalVersion>1.2.4</InformationalVersion>
 
     <!-- 套件資訊 -->
     <Title>ExcelKit</Title>

@@ -39,7 +39,7 @@
 1. 建置專案
    - 開啟 `Excelopen.slnx` 後建置，或使用 `dotnet build`。
 2. 若需 COM 用途（`net472`）
-   - 以系統管理員執行註冊腳本（例如專案內既有 `register-excelopen.bat`）。
+   - 參考 `Reference/Manual/ExcelKit_User_Manual.md` 中的 COM 註冊指令進行註冊。
 3. 執行測試腳本
    - 到 `測試腳本/` 執行 `Run_All_Ordered_Tests.vbs`。
 
@@ -54,7 +54,6 @@
 - `Reference/LabVIEW/ExcelKit_ReadExistFile.vi`：LabVIEW 讀取既有 Excel 範例
 - `Reference/LabVIEW/ExcelKit_SavePDFPrint.vi`：LabVIEW 匯出 PDF 與列印範例
 - `Reference/Media/Snipaste_2026-04-03_19-25-28.png`：操作畫面截圖
-- `Reference/Media/Video_2026-04-03_191853.mp4`：示範影片
 
 若需測試完整 API 流程，仍可參考 `測試腳本/` 內的編號 VBS 測試案例。
 
