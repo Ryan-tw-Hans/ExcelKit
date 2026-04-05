@@ -11,8 +11,8 @@
 ## 專案結構
 
 - `Excelopen/`：核心函式庫（`ExcelKit`，多目標 `net472;net10.0`）
+- `Reference/`：手冊、VBS 範例、LabVIEW 範例、影片與圖片
 - `測試腳本/`：VBScript 測試案例與測試報告輸出
-- `Docs/`：文件與使用說明
 - `Excelopen.slnx`：方案檔
 
 ## 主要功能
@@ -42,6 +42,21 @@
    - 以系統管理員執行註冊腳本（例如專案內既有 `register-excelopen.bat`）。
 3. 執行測試腳本
    - 到 `測試腳本/` 執行 `Run_All_Ordered_Tests.vbs`。
+
+## 參考資料
+
+所有對外參考素材已集中於 `Reference/`，可依類型直接查閱：
+
+- `Reference/Manual/ExcelKit_User_Manual.md`：Markdown 使用手冊
+- `Reference/Manual/ExcelKit_User_Manual.html`：HTML 使用手冊
+- `Reference/Manual/ExcelKit_User_Manual.pdf`：PDF 使用手冊
+- `Reference/VBS/example.vbs`：VBScript 基本範例
+- `Reference/LabVIEW/ExcelKit_ReadExistFile.vi`：LabVIEW 讀取既有 Excel 範例
+- `Reference/LabVIEW/ExcelKit_SavePDFPrint.vi`：LabVIEW 匯出 PDF 與列印範例
+- `Reference/Media/Snipaste_2026-04-03_19-25-28.png`：操作畫面截圖
+- `Reference/Media/Video_2026-04-03_191853.mp4`：示範影片
+
+若需測試完整 API 流程，仍可參考 `測試腳本/` 內的編號 VBS 測試案例。
 
 ## 授權
 
