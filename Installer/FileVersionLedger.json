@@ -1,0 +1,20 @@
+{
+    "schema":  1,
+    "entries":  [
+                    {
+                        "file_version":  "1.2.4.1",
+                        "component_version":  "1.2.4+20261116223400",
+                        "source_sha256":  "8F2BF282DDF2BAB9C80A70E17E0EE64B8B2051FAE084351D55C889518BD860F3"
+                    },
+                    {
+                        "file_version":  "1.2.4.2",
+                        "component_version":  "1.2.4+20261117065015",
+                        "source_sha256":  "BC49A6EC44C828AC8FAB2751A553B5F6A5980C666C755D89EE815728B186FFD7"
+                    },
+                    {
+                        "file_version":  "1.2.4.3",
+                        "component_version":  "1.2.4+20261117094415",
+                        "source_sha256":  "3A683003CCA36DEEE276CC6C8B54506C5C99A0538DE690B411A6083A84A11B24"
+                    }
+                ]
+}

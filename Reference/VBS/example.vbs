@@ -8,13 +8,13 @@ filePath = "C:\Temp\TestExcel.xlsx" ' 請確保該目錄存在
 Set excel = CreateObject("ExcelKit.ExcelOperator")
 
 If Err.Number <> 0 Then
-    MsgBox "無法建立 ExcelKit 物件，請檢查是否已成功註冊。" & vbCrLf & Err.Descript
+    MsgBox "無法建立 ExcelKit 物件，請檢查是否已成功註冊。" & vbCrLf & Err.Description
     WScript.Quit
 End If
 
 ' 2. (選填) LibreOffice 路徑設定
 ' 元件會自動嘗試尋找 LibreOffice，但若您的安裝路徑較為特殊，建議手動設定路徑
-excel.SetLibreOfficePath "C:\Users\ryan_\source\repos\Excelopen\測試腳本\LibreOfficePortable\App\libreoffice\program\soffice.exe"
+' Optional: excel.SetLibreOfficePath "C:\Program Files\LibreOffice\program\soffice.exe"
 
 ' 3. 設定日誌
 excel.SetLogEnabled True

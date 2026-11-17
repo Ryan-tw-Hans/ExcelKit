@@ -1,4 +1,4 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,6 +69,10 @@ using System.Runtime.InteropServices;
         double GetColumnWidth(string sheetName, int columnNumber);
         [DispId(26)]
         object GetAllSheetNames();
+        [DispId(27)]
+        void SetCellFontColor(string sheetName, string cellAddress, int red, int green, int blue);
+        [DispId(28)]
+        void SetCellFontColorByRC(string sheetName, int row, int column, int red, int green, int blue);
     }
 
     /// <summary>
@@ -89,7 +93,7 @@ using System.Runtime.InteropServices;
         /// <summary>
         /// 庫版本號
         /// </summary>
-        public static readonly string Version = "1.2.4";
+        public static readonly string Version = "1.2.4+20261117094415";
 
         /// <summary>
         /// 庫名稱
@@ -99,7 +103,7 @@ using System.Runtime.InteropServices;
         /// <summary>
         /// 最後更新日期
         /// </summary>
-        public static readonly string LastUpdateDate = "2026-04-05";
+        public static readonly string LastUpdateDate = "2026-11-17";
 
         /// <summary>
         /// 取得版本資訊字串 (靜態版本)
@@ -222,6 +226,28 @@ using System.Runtime.InteropServices;
         #endregion
 
         #region 儲存格操作
+
+        /// <summary>設定整個儲存格的字型 RGB 顏色。</summary>
+        public void SetCellFontColor(string sheetName, string cellAddress, int red, int green, int blue)
+        {
+            var color = CreateFontColor(red, green, blue);
+            _workbook.Worksheet(sheetName).Cell(cellAddress).Style.Font.FontColor = color;
+        }
+
+        /// <summary>依一開始的行列號設定整個儲存格的字型 RGB 顏色。</summary>
+        public void SetCellFontColorByRC(string sheetName, int row, int column, int red, int green, int blue)
+        {
+            var color = CreateFontColor(red, green, blue);
+            _workbook.Worksheet(sheetName).Cell(row, column).Style.Font.FontColor = color;
+        }
+
+        private static XLColor CreateFontColor(int red, int green, int blue)
+        {
+            if (red < 0 || red > 255) throw new ArgumentOutOfRangeException(nameof(red));
+            if (green < 0 || green > 255) throw new ArgumentOutOfRangeException(nameof(green));
+            if (blue < 0 || blue > 255) throw new ArgumentOutOfRangeException(nameof(blue));
+            return XLColor.FromArgb(red, green, blue);
+        }
 
         /// <summary>
         /// 寫入儲存格值（自動支援常見資料類型）
@@ -976,3 +1002,5 @@ using System.Runtime.InteropServices;
         }
     }
 }
+
+

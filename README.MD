@@ -10,10 +10,10 @@
 
 ## 專案結構
 
-- `Excelopen/`：核心函式庫（`ExcelKit`，多目標 `net472;net10.0`）
+- `src/Excelopen/`：核心函式庫（`ExcelKit`，多目標 `net472;net10.0`）
 - `Reference/`：手冊、VBS 範例、LabVIEW 範例、影片與圖片
 - `測試腳本/`：VBScript 測試案例與測試報告輸出
-- `Excelopen.slnx`：方案檔
+- `src/Excelopen.slnx`：方案檔
 
 ## 主要功能
 
@@ -37,7 +37,7 @@
 ## 快速開始
 
 1. 建置專案
-   - 開啟 `Excelopen.slnx` 後建置，或使用 `dotnet build`。
+   - 開啟 `src/Excelopen.slnx` 後建置，或在 `src/` 下使用 `dotnet build`。
 2. 若需 COM 用途（`net472`）
    - 參考 `Reference/Manual/ExcelKit_User_Manual.md` 中的 COM 註冊指令進行註冊。
 3. 執行測試腳本
@@ -83,3 +83,6 @@
 - 套件授權資訊以 NuGet 套件頁面與其原始碼儲存庫（LICENSE 檔）為準。
 - 若您重新散布本專案二進位或原始碼，請一併遵循上述第三方套件授權要求。
 - `LibreOffice` 為外部工具，不屬於本專案內建 NuGet 相依；若隨產品散布，請自行遵循 LibreOffice 官方授權條款。
+## 發布資料夾
+
+執行 `dotnet build src/Excelopen.slnx -c Release` 會把元件整理到 `publish/bin/net472/` 和 `publish/bin/net10.0/`，手冊放在 `publish/Manual/`，VBS 與 LabVIEW 範例放在 `publish/Examples/`，圖片及影片放在 `publish/Media/`。建置不會自動刪除舊檔；升級前請檢查目標內容，避免保留不再需要的舊版相依檔。COM 用途請參考手冊，建置不會自動註冊元件。

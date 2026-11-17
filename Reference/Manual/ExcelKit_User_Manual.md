@@ -356,3 +356,25 @@ Set excel = Nothing
     *   註冊時必須對 CMD 點選「右鍵 -> 以管理員身分執行」。
 *   **FileNotFoundException**：
     *   使用 `regasm` 時，請務必加上 `/codebase` 參數，否則 .NET 會去 GAC 尋找 DLL。
+
+## 儲存格文字顏色（RGB）
+
+使用 `SetCellFontColor(sheetName, cellAddress, red, green, blue)` 依位址設定，或使用 `SetCellFontColorByRC(sheetName, row, column, red, green, blue)` 依行列設定；行、列從 1 開始。RGB 三個整數各為 0–255，超出範圍會回報錯誤；工作表必須已存在。只設定整個儲存格的文字顏色，不改變儲存格值或其他格式。儲存活頁簿後顏色才會寫入檔案。
+
+```vbscript
+excel.SetCellValue "Sheet1", "A1", "紅色文字"
+excel.SetCellFontColor "Sheet1", "A1", 255, 0, 0
+excel.SetCellValueByRC "Sheet1", 2, 2, "藍色文字"
+excel.SetCellFontColorByRC "Sheet1", 2, 2, 0, 0, 255
+excel.SaveWorkbook filePath
+```
+
+完整 PowerShell 範例請見 `Examples/PowerShell/FontColor.ps1`。不支援局部字元、背景色或主題色。
+
+## DLL 版本與 COM 引用
+
+COM 呼叫名稱維持 `ExcelKit.ExcelOperator`，例如 `CreateObject("ExcelKit.ExcelOperator")`。相容更新維持組件版本與現有介面識別，並以獨立新增介面方式擴充；仍需對實際用戶端驗證相容性。
+
+DLL 的「檔案版本」使用 `正式基準.修訂序號`（例如 `1.2.4.1`），可在 Windows 檔案內容的詳細資料中查看；每次程式更新採用比前次更大的版本。產品版本例如 `1.2.4+20261116223400` 使用時間戳，COM 組件版本 `1.2.4.0` 是不同欄位，請勿以組件版本判斷檔案是否相同。
+
+開發者發布前須更新元件產品版本、資訊版本、Class1 中的版本和 DLL FileVersion，再執行 `powershell.exe -NoProfile -File Installer/FileVersion.ps1 -Mode Reserve` 預留；接著打包預檢會比對台帳、來源、既有報告與可讀的本機 COM 登錄 DLL。版本衝突或資訊無法讀取時停止。版本台帳須在發行者間同步協調；未納入的其他機器或檔案不會自動被發現。已預留的版本不回收，來源變動要重新分配更大版本與新產品時間戳。

@@ -18,7 +18,7 @@ op.SetCellValue "Sheet1", "A1", expectedValue
 op.SaveWorkbook workbookPath
 
 value = ReadCellValueByAdo(workbookPath, "Sheet1", "A1")
-
+msgbox value
 If Err.Number <> 0 Then
     status = "FAIL"
     message = "Set/Get by name failed: " & Err.Description

@@ -1,0 +1,10 @@
+﻿LibreOffice 下載連結 / Download links
+
+安裝版 / Installer:
+https://www.libreoffice.org/download/
+
+免安裝版 / Portable:
+https://portableapps.com/apps/office/libreoffice_portable
+
+請連線至下載頁，自行選擇適用的版本。免安裝版 Multilingual Standard 包含繁體中文。
+Internet access is required. Choose the version suitable for your system on the download page.

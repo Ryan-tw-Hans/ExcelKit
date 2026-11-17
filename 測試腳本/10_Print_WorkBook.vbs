@@ -9,8 +9,8 @@ status = "PASS"
 message = "Print command success"
 workbookPath = GetWorkbookPath()
 librePath = GetLibreOfficePath()
-printerName = GetArgOrDefault(2, "")
-
+printerName ="Test.xlsx" 'GetArgOrDefault(2, "")
+msgbox printerName
 On Error Resume Next
 Set op = CreateOperator()
 SaveMinimalWorkbook op
@@ -20,6 +20,7 @@ If Len(librePath) > 0 Then
 End If
 
 op.PrintWorkbook workbookPath, printerName
+msgbox printerName
 If Err.Number <> 0 Then
     If InStr(1, LCase(Err.Description), "libreoffice", vbTextCompare) > 0 Then
         status = "SKIP"

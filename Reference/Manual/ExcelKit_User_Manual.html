@@ -470,5 +470,20 @@ Set excel = Nothing
 </ul>
 </li>
 </ul>
+<h2>儲存格文字顏色（RGB）</h2>
+<p>使用 <code>SetCellFontColor(sheetName, cellAddress, red, green, blue)</code> 依位址設定，或使用 <code>SetCellFontColorByRC(sheetName, row, column, red, green, blue)</code> 依行列設定；行、列從 1 開始。RGB 三個整數各為 0–255，超出範圍會回報錯誤；工作表必須已存在。只設定整個儲存格的文字顏色，不改變儲存格值或其他格式。儲存活頁簿後顏色才會寫入檔案。</p>
+<pre><code class="language-vbscript">excel.SetCellValue &quot;Sheet1&quot;, &quot;A1&quot;, &quot;紅色文字&quot;
+excel.SetCellFontColor &quot;Sheet1&quot;, &quot;A1&quot;, 255, 0, 0
+excel.SetCellValueByRC &quot;Sheet1&quot;, 2, 2, &quot;藍色文字&quot;
+excel.SetCellFontColorByRC &quot;Sheet1&quot;, 2, 2, 0, 0, 255
+excel.SaveWorkbook filePath
+</code></pre>
+<p>完整 PowerShell 範例請見 <code>Examples/PowerShell/FontColor.ps1</code>。不支援局部字元、背景色或主題色。</p>
+<div style="break-before: page;">
+<h2>DLL 版本與 COM 引用</h2>
+<p>COM 呼叫名稱維持 <code>ExcelKit.ExcelOperator</code>，例如 <code>CreateObject("ExcelKit.ExcelOperator")</code>。相容更新維持組件版本與現有介面識別，並以獨立新增介面方式擴充；仍需對實際用戶端驗證相容性。</p>
+<p>DLL 的「檔案版本」使用 <code>正式基準.修訂序號</code>（例如 <code>1.2.4.1</code>），可在 Windows 檔案內容的詳細資料中查看；每次程式更新採用比前次更大的版本。產品版本例如 <code>1.2.4+20261116223400</code> 使用時間戳，COM 組件版本 <code>1.2.4.0</code> 是不同欄位，請勿以組件版本判斷檔案是否相同。</p>
+<p>開發者發布前須更新元件產品版本、資訊版本、Class1 中的版本和 DLL FileVersion，再執行 <code>powershell.exe -NoProfile -File Installer/FileVersion.ps1 -Mode Reserve</code> 預留；接著打包預檢會比對台帳、來源、既有報告與可讀的本機 COM 登錄 DLL。版本衝突或資訊無法讀取時停止。版本台帳須在發行者間同步協調；未納入的其他機器或檔案不會自動被發現。已預留的版本不回收，來源變動要重新分配更大版本與新產品時間戳。</p>
+</div>
 </body>
 </html>
