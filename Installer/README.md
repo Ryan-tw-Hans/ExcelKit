@@ -58,8 +58,13 @@ Windows 11 x64 Sandbox 的 x86／x64 客戶端測試及故障注入結果請見�
 歡迎頁顯示已註冊 DLL 及套件版本資訊，並可直接開啟下載頁或已確認的安裝資料夾，不需繼續安裝。版本偵測僅讀取登錄與 DLL，註冊資訊不等同搜尋整台電腦；無法確認時顯示未知。啟動時仍可能要求管理員權限，實際安裝前會檢查 .NET Framework。
 
 ## GitHub Actions 與集中序號
-推送 main 或 feature/* 分支，以及手動執行 workflow 時，GitHub Windows runner 會安裝鎖定版本工具、執行配號及預檢測試並打包。成功時在該次 Actions 的 artifacts 下載 EXE、manifest 與 build report；不會自動建立 Release 或部署。報告記錄 source_commit、GitHub run ID、attempt 與檔案雜湊。artifact 可能依 GitHub 設定過期；請依需要另行保存。
+推送 main 或 feature/* 分支，以及手動執行 workflow 時，GitHub Windows runner 會安裝鎖定版本工具、執行配號及預檢測試並打包。成功時在該次 Actions 的 artifacts 下載 EXE、manifest 與 build report，並建立附有相同三份檔案的 GitHub 測試版 Release；不自動部署。報告記錄 source_commit、GitHub run ID、attempt 與檔案雜湊。artifact 可能依 GitHub 設定過期；請依需要另行保存。
 
 新版打包須使用原 GitHub origin 和網路；透過受保護的 `refs/tags/excelkit-package/<台北日期>/<序號>` 原子建立紀錄。本機需 GitHub push 權限，CI 使用 workflow 的 contents:write；任何失敗或取消不回收已建參照。歷史 20261117-01 已匯入，該歷史參照指向導入時基底而非舊包的來源 commit，舊包資料請看原 build report。不可刪改參照或停用保護規則；配號前驗證 ruleset ID 及已審核更新時間。規則改動會使打包停止，需管理員重新核對規則並更新受信任基準。管理員仍可能修改規則本身，應定期檢查設定與日誌。
 
 本機保留序號前需先提交 src 與 Installer 的變更；未追蹤的 src 亦會阻擋。只有 GitHub 保護及既有序號記錄可查時才能打包，不可使用舊版本的本機獨立配號流程；離線、權限不足、無法確認推送結果或衝突時停止，先檢查遠端參照後重新預檢。跨工作區不得使用舊腳本自行配號。雲端建置與靜態檢查不等於安裝、升級、COM、GUI 或 LabVIEW 的驗收。
+## 下載 Setup 與 JSON 的用途
+在 GitHub Releases 選擇標示「測試版」的版本，在 Assets 點選 `ExcelKit-Setup-<版本>.exe` 安裝；GitHub 顯示的 Source code ZIP/TAR 是原始碼，不是安裝程式。安裝一般只需 EXE，兩份 JSON 可供檢查與追溯：
+- `.manifest.json` 列出安裝內容及各檔 SHA-256，供 Verify-ExcelKit.ps1 核對；安裝器本身亦攜帶安裝所需清單。
+- `.build.json` 記錄來源提交、工具版本、輸入與安裝包雜湊等建置資訊，用於追溯及驗證。
+公開前 workflow 先建立 draft，下載核對三個 Release 資產後轉成 prerelease。若任何步驟中斷，保留 draft 並停止；遇到同版 Release 不覆寫，請由維運人員檢查 GitHub，再依情況處理，不重用序號。測試版不代表已驗證實際安裝、升級或 COM。

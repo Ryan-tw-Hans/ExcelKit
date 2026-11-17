@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: read
 jobs:
   package:
     runs-on: windows-2025
@@ -38,6 +39,8 @@ jobs:
       - name: Run packaging checks
         shell: pwsh
         run: |
+          pwsh -NoProfile -NonInteractive -File Installer/Tests/Test-PublishGitHubRelease.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python Installer/Tests/Test-PackageVersion.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $compiler = Join-Path $env:LOCALAPPDATA 'Programs\Inno Setup 7\ISCC.exe'
@@ -59,3 +62,46 @@ jobs:
             publish/Installer/Setup/*.manifest.json
             publish/Installer/Setup/*.build.json
           if-no-files-found: error
+
+      - name: Publish verified prerelease
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $report = @(Get-ChildItem publish/Installer/Setup/*.build.json)
+          if ($report.Count -ne 1) { throw 'Expected one build report' }
+          $version = (Get-Content $report[0].FullName -Raw -Encoding UTF8 | ConvertFrom-Json).installer_version
+          & ./Installer/Publish-GitHubRelease.ps1 -Directory publish/Installer/Setup -Version $version
+
+  publish-existing-03:
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish existing verified test installer
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag='excelkit-package/20261117/03'
+          $url='https://api.github.com/repos/Ryan-tw-Hans/ExcelKit/releases/tags/'+[Uri]::EscapeDataString($tag)
+          $headers=@{Authorization='Bearer '+$env:GH_TOKEN;Accept='application/vnd.github+json';'User-Agent'='ExcelKit-release'}
+          $response=Invoke-WebRequest -Uri $url -Headers $headers -SkipHttpErrorCheck
+          if ($response.StatusCode -eq 200) {
+            $release=$response.Content | ConvertFrom-Json
+            $asset=@($release.assets | Where-Object { $_.name -eq 'ExcelKit-Setup-1.2.4.3-20261117-03.exe' })
+            if (-not $release.prerelease -or $release.draft -or $asset.Count -ne 1 -or $asset[0].digest -ne 'sha256:8311aeb0869c56b068ed927e937de4e19632fe74d5e531a3d49f5d35b4d4fee9') { throw 'Existing release requires manual review' }
+            Write-Host 'Existing prerelease verified; no changes made.'
+            exit 0
+          }
+          if ($response.StatusCode -ne 404) { throw "Release lookup failed: HTTP $($response.StatusCode)" }
+          $folder=Join-Path $env:RUNNER_TEMP 'excelkit-existing-03'
+          gh run download 44019339114 --repo Ryan-tw-Hans/ExcelKit --name ExcelKit-installer-44019339114-1 --dir $folder
+          if ($LASTEXITCODE -ne 0) { throw 'Cannot download existing build artifact' }
+          $exe=Join-Path $folder 'ExcelKit-Setup-1.2.4.3-20261117-03.exe'
+          $manifest=Join-Path $folder 'ExcelKit-Setup-1.2.4.3-20261117-03.manifest.json'
+          $report=Join-Path $folder 'ExcelKit-Setup-1.2.4.3-20261117-03.build.json'
+          if ((Get-FileHash $exe -Algorithm SHA256).Hash -ne '8311AEB0869C56B068ED927E937DE4E19632FE74D5E531A3D49F5D35B4D4FEE9') { throw 'Existing installer hash mismatch' }
+          if ((Get-FileHash $manifest -Algorithm SHA256).Hash -ne '39070DB223AAE537EE470D5B93911715E66098868C5CE2B562812FBC3E6EA86A') { throw 'Existing manifest hash mismatch' }
+          if ((Get-Content $report -Raw -Encoding UTF8 | ConvertFrom-Json).source_commit -ne '557dcbcbb7be93da2d97064c782fa2f4126c4610') { throw 'Existing source commit mismatch' }
+          & ./Installer/Publish-GitHubRelease.ps1 -Directory $folder -Version '1.2.4.3-20261117-03'
