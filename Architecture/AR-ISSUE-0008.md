@@ -1,6 +1,6 @@
 # ISSUE-0008｜跨環境打包與序號架構評估草案 v0.1
 
-SA／系統整合／維運：Codex 依序執行，自查非獨立審查。需求：Requirements/RS-ISSUE-0008.md；狀態：待人類核准；結論：有條件採用。
+SA／系統整合／維運：Codex 依序執行，自查非獨立審查。需求：Requirements/RS-ISSUE-0008.md；狀態：使用者已核准 v0.1；結論：有條件採用。
 
 ## 現況與限制
 Installer/PackageVersion.ps1 掃描工作區的 `.tools/package-versions` 與 `publish/Installer/Setup`，以工作區路徑決定命名互斥鎖；保證不跨機器或工作區。Installer/FileVersion.ps1 另檢查 DLL 版本台帳、來源雜湊與本機 COM。GitHub hosted runner 為暫時環境，不能以本機鎖或 artifact 保存狀態來保證跨執行唯一性。此前預檢 fixture 因讀取主機 COM 發生衝突，需明確隔離驗證，不得繞過正式防護。
